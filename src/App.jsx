@@ -273,8 +273,8 @@ function App() {
               <Sparkles size={12} className="text-blue-400" />
               <span className="text-[10px] text-blue-400 font-semibold uppercase tracking-widest">Active Model</span>
             </div>
-            <p className="text-xs text-gray-300 font-mono truncate">tinyllama-python-coder</p>
-            <p className="text-[10px] text-gray-500 mt-0.5">LoRA fine-tuned · 1.1B params</p>
+            <p className="text-xs text-gray-300 font-mono truncate">tiny-python-coder</p>
+            <p className="text-[10px] text-gray-500 mt-0.5">tiny-python-coder</p>
           </div>
 
           {/* Chat History placeholder */}
