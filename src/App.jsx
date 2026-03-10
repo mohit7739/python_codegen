@@ -89,7 +89,7 @@ const WelcomeScreen = ({ onSuggestion }) => {
       <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center mb-5 shadow-lg shadow-blue-500/20">
         <Zap size={32} className="text-white" />
       </div>
-      <h2 className="text-3xl font-semibold text-white mb-2">LlamaCoder</h2>
+      <h2 className="text-3xl font-semibold text-white mb-2">PythonCoder</h2>
       <p className="text-gray-400 text-sm mb-10 max-w-xs">Powered by a fine-tuned TinyLlama model. Ask me anything about Python!</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-xl">
         {suggestions.map((s, i) => (
@@ -324,7 +324,7 @@ function App() {
             </svg>
           </button>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-white">LlamaCoder</span>
+            <span className="text-sm font-semibold text-white">PythonCoder</span>
             <span className="text-[10px] bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded-full font-mono tracking-wide">TinyLlama 1.1B</span>
           </div>
         </header>
@@ -401,7 +401,7 @@ function App() {
               <textarea
                 ref={textareaRef}
                 rows={1}
-                placeholder="Message LlamaCoder…"
+                placeholder="Message PythonCoder…"
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => {
@@ -424,7 +424,7 @@ function App() {
               </button>
             </div>
             <p className="text-center text-[11px] text-gray-600 mt-2.5">
-              LlamaCoder can make mistakes. Consider checking important information.
+              PythonCoder can make mistakes. Consider checking important information.
             </p>
           </div>
         </footer>
