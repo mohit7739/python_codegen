@@ -85,18 +85,18 @@ const WelcomeScreen = ({ onSuggestion }) => {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center h-full px-4 text-center select-none">
-      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center mb-5 shadow-lg shadow-blue-500/20">
-        <Zap size={32} className="text-white" />
+    <div className="flex flex-col items-center justify-center h-full px-4 sm:px-6 text-center select-none py-10 overflow-y-auto">
+      <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center mb-4 sm:mb-5 shadow-lg shadow-blue-500/20 flex-shrink-0">
+        <Zap className="text-white w-7 h-7 sm:w-8 sm:h-8" />
       </div>
-      <h2 className="text-3xl font-semibold text-white mb-2">PythonCoder</h2>
-      <p className="text-gray-400 text-sm mb-10 max-w-xs">Powered by a fine-tuned TinyLlama model. Ask me anything about Python!</p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-xl">
+      <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-2 flex-shrink-0">PythonCoder</h2>
+      <p className="text-gray-400 text-[13px] sm:text-sm mb-8 sm:mb-10 max-w-xs flex-shrink-0">Powered by a fine-tuned TinyLlama model. Ask me anything about Python!</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 w-full max-w-xl">
         {suggestions.map((s, i) => (
           <button
             key={i}
             onClick={() => onSuggestion(s)}
-            className="text-left p-3.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-sm text-gray-300 hover:text-white transition-all duration-150"
+            className="text-left p-3 sm:p-3.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-[13px] sm:text-sm text-gray-300 hover:text-white transition-all duration-150"
           >
             {s}
           </button>
@@ -112,7 +112,7 @@ function App() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [retryCountdown, setRetryCountdown] = useState(null); // null | number
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
   const scrollRef = useRef(null);
   const textareaRef = useRef(null);
 
@@ -253,14 +253,29 @@ function App() {
   return (
     <div className="flex h-screen bg-[#212121] text-gray-100 overflow-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
 
+      {/* Mobile Overlay */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 z-40 md:hidden transition-opacity"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* ── SIDEBAR ── */}
       <aside
-        className={`${sidebarOpen ? 'w-64' : 'w-0'} flex-shrink-0 transition-all duration-300 overflow-hidden bg-[#171717] flex flex-col`}
+        className={`
+          fixed md:relative z-50 h-full
+          ${sidebarOpen ? 'translate-x-0 w-[280px] md:w-64' : '-translate-x-full w-[280px] md:w-0'} 
+          flex-shrink-0 transition-transform md:transition-all duration-300 overflow-hidden bg-[#171717] flex flex-col border-r border-white/5 md:border-none
+        `}
       >
         <div className="flex flex-col h-full p-3">
           {/* New Chat */}
           <button
-            onClick={handleNewChat}
+            onClick={() => {
+              handleNewChat();
+              if (window.innerWidth < 768) setSidebarOpen(false);
+            }}
             className="flex items-center gap-2 w-full px-3 py-2.5 rounded-xl hover:bg-white/10 text-sm text-gray-200 transition-colors duration-150 mb-1"
           >
             <PenSquare size={16} />
@@ -334,11 +349,11 @@ function App() {
           {messages.length === 0 ? (
             <WelcomeScreen onSuggestion={(s) => { setInput(s); setTimeout(() => handleSend(s), 0); }} />
           ) : (
-            <div className="max-w-3xl mx-auto w-full px-4 py-6 space-y-1">
+            <div className="max-w-3xl mx-auto w-full px-2 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-1">
               {messages.map((msg, i) => (
                 <div
                   key={i}
-                  className={`flex gap-3 px-2 py-4 rounded-2xl ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  className={`flex gap-2 sm:gap-3 px-1 sm:px-2 py-1 sm:py-4 rounded-2xl ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   {msg.role === 'assistant' && (
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-md shadow-blue-500/20">
@@ -346,13 +361,13 @@ function App() {
                     </div>
                   )}
 
-                  <div className={`max-w-[85%] ${msg.role === 'user' ? 'order-first' : ''}`}>
+                  <div className={`min-w-0 max-w-[90%] sm:max-w-[85%] ${msg.role === 'user' ? 'order-first' : ''}`}>
                     {msg.role === 'user' ? (
-                      <div className="bg-[#2f2f2f] text-gray-100 rounded-3xl px-5 py-3 text-sm leading-relaxed">
+                      <div className="bg-[#2f2f2f] text-gray-100 rounded-3xl px-4 py-2 sm:px-5 sm:py-3 text-[13px] sm:text-sm leading-relaxed break-words">
                         {msg.content}
                       </div>
                     ) : (
-                      <div className="prose-chat text-gray-200 text-sm">
+                      <div className="prose-chat text-gray-200 text-[13px] sm:text-sm min-w-0 break-words overflow-x-auto">
                         <ReactMarkdown components={markdownComponents}>
                           {msg.content}
                         </ReactMarkdown>
@@ -395,9 +410,9 @@ function App() {
         </main>
 
         {/* Input Area */}
-        <footer className="flex-shrink-0 px-4 pb-4 pt-2 bg-[#212121]">
+        <footer className="flex-shrink-0 px-2 sm:px-4 pb-3 sm:pb-4 pt-2 bg-[#212121]">
           <div className="max-w-3xl mx-auto">
-            <div className="relative flex items-end gap-2 bg-[#2f2f2f] rounded-3xl border border-white/10 px-4 py-3 shadow-xl focus-within:border-white/25 transition-colors">
+            <div className="relative flex items-end gap-2 bg-[#2f2f2f] rounded-3xl border border-white/10 px-3 py-2 sm:px-4 sm:py-3 shadow-xl focus-within:border-white/25 transition-colors">
               <textarea
                 ref={textareaRef}
                 rows={1}
